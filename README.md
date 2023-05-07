@@ -18,7 +18,8 @@ To use them:
 1. Enter a command to run that builds and runs a program.
    For example, `lua main.lua`.
 
-Every time a file that matches the pattern is saved,
+This will run the command immediately and again
+every time a file that matches the pattern is saved,
 the command will be executed.
 Its output, both stdout and stderr, will be displayed
 in the buffer in the vertical split.
