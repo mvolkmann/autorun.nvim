@@ -37,7 +37,7 @@ vim.api.nvim_create_user_command(
     local words = vim.split(command, " ")
     attach_to_buffer(tonumber(bufnum), pattern, words)
   end,
-  {} -- options
+  {}
 )
 
 vim.api.nvim_create_user_command(
@@ -46,5 +46,5 @@ vim.api.nvim_create_user_command(
     local bufnr = vim.api.nvim_get_current_buf()
     print("buffer number is " .. bufnr)
   end,
-  {} -- options
+  {}
 )
