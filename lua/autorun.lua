@@ -1,6 +1,8 @@
 -- I configured the key mapping <leader>x
 -- to write and source the current buffer.
 -- This is useful when developing a Neovim plugin.
+--
+print("autorun.nvim plugin entered")
 
 local function attach_to_buffer(bufnr, pattern, command)
   -- read ":help autocmd"
@@ -48,3 +50,5 @@ vim.api.nvim_create_user_command(
   end,
   {}
 )
+
+print("autorun.nvim plugin exiting")
