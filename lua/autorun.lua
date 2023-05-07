@@ -1,15 +1,3 @@
--- This is required by ~/.config/nvim/lua/user/init.lua.
--- To use it:
--- * Enter ":vnew" to open a new empty buffer in a vertical split.
--- * Type "bn" to get its buffer number.
--- * Open an .lua source file.
--- * Enter ":AutoRun"
--- * Enter the buffer number from above.
--- * Enter a file pattern like "*.lua"
--- * Enter a command like "lua demo.lua"
--- * Save (write) the file "demo.lua" to trigger running the command
---   and sending its output to the buffer created in the first step.
-
 -- I configured the key mapping <leader>x
 -- to write and source the current buffer.
 -- This is useful when developing a Neovim plugin.
@@ -40,9 +28,6 @@ local function attach_to_buffer(bufnr, pattern, command)
   })
 end
 
--- To get the number of the current buffer, enter :echo nvim_get_current_buf()
--- attach_to_buffer(153, "*.lua", { "lua", "numbers.lua" })
-
 vim.api.nvim_create_user_command(
   "AutoRun",
   function()
@@ -50,8 +35,16 @@ vim.api.nvim_create_user_command(
     local pattern = vim.fn.input "File Pattern: "
     local command = vim.fn.input "Command: "
     local words = vim.split(command, " ")
-    print("words =", words)
     attach_to_buffer(tonumber(bufnum), pattern, words)
+  end,
+  {} -- options
+)
+
+vim.api.nvim_create_user_command(
+  "BufNum",
+  function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    print("buffer number is " .. bufnr)
   end,
   {} -- options
 )
