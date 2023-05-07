@@ -32,7 +32,6 @@ local function attach_to_buffer(bufnr, pattern, command)
 end
 
 M.setup = function()
-  print("autorun.lua setup entered")
   vim.api.nvim_create_user_command(
     "AutoRun",
     function()
@@ -52,7 +51,6 @@ M.setup = function()
     end,
     {}
   )
-  print("autorun.lua setup exiting")
 end
 
 return M
