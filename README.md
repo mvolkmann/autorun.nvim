@@ -1,13 +1,12 @@
 # autorun.vim
 
 This is a Neovim plugin that was inspired by the TJ Devries YouTube videos
-{% aTargetBlank "https://www.youtube.com/watch?v=9gUatBHuXE0&t=30s",
-"Automatically Execute *Anything* in Nvim" %} and {% aTargetBlank
-"https://www.youtube.com/watch?v=HlfjpstqXwE&t=20s",
-"Execute **anything** in neovim (now customizable)" %}.
+[Automatically Execute _Anything_ in Nvim](https://www.youtube.com/watch?v=9gUatBHuXE0)
+and
+[Execute **anything** in neovim (now customizable)](https://www.youtube.com/watch?v=HlfjpstqXwE).
 
-This creates a user command named "AutoRun".
-To use this:
+This creates the user commands "BufNum" and "AutoRun".
+To use them:
 
 1. Open a source file that can be executed by some shell command.
 1. Enter `:vnew` to open an empty buffer in a vertical split.
