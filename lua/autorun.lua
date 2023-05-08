@@ -32,17 +32,17 @@ local function attach_to_buffer(bufnr, pattern, command)
         local start = isError and -1 or 0
         local title = isError and "stderr" or "stdout"
 
-        local ns_id = vim.api.nvim_create_namespace('autorun')
+        --[[ local ns_id = vim.api.nvim_create_namespace('autorun')
         vim.api.nvim_buf_set_extmark(bufnr, ns_id, start, 0, {
           hl_group = "Error",
           hl_eol = true
-        })
+        }) ]]
         vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
-        vim.api.nvim_buf_set_extmark(bufnr, ns_id, -1, 0, {
+
+        --[[ vim.api.nvim_buf_set_extmark(bufnr, ns_id, -1, 0, {
           hl_group = "Normal",
           hl_eol = true
-        })
-
+        }) ]]
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
       end
       -- Move focus back to the previous buffer.
