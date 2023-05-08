@@ -30,7 +30,9 @@ local function attach_to_buffer(bufnr, pattern, command)
       -- Replace all existing lines
       if #data then
         local start = isError and -1 or 0
-        vim.api.nvim_buf_set_lines(bufnr, start, -1, false, data)
+        local title = isError and "stderr" or "stdout"
+        vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
+        vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
       end
       -- Move focus back to the previous buffer.
       vim.api.nvim_input("<C-w>h")
