@@ -27,7 +27,11 @@ local function attach_to_buffer(bufnr, pattern, command)
         vim.api.nvim_buf_add_highlight(bufnr, 0, hl_group, 1, 1, 80)
         -- vim.api.nvim_buf_set_extmark(bufnr, 0, hl_group, 1)
       end ]]
-      vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
+      -- Replace all existing lines
+      if #data then
+        local start = isError and -1 or 0
+        vim.api.nvim_buf_set_lines(bufnr, start, -1, false, data)
+      end
       -- Move focus back to the previous buffer.
       vim.api.nvim_input("<C-w>h")
     end
