@@ -54,8 +54,10 @@ M.setup = function()
       vim.api.nvim_command("vnew")
       -- TODO: Get the buffer number.
       local bufnr = vim.api.nvim_get_current_buf()
+      print("bufnr =", bufnr)
       -- TODO: Move focus back to the previous buffer.
-      vim.api.nvim_command("bprevious")
+      -- vim.api.nvim_command("bprevious")
+      vim.api.nvim_input("<C-w>h")
       -- TODO: Now you won't need to prompt for the buffer number below.
       -- local bufnr = vim.fn.input "Buffer Number: "
       local pattern = vim.fn.input "File Pattern: "
