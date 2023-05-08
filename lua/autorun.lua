@@ -57,7 +57,7 @@ local function attach_to_buffer(bufnr, pattern, command)
   end
 
   vim.api.nvim_create_autocmd("BufWritePost", {
-    group = vim.api.nvim_create_augroup("RMV", { clear = true }),
+    group = vim.api.nvim_create_augroup("autorun", { clear = true }),
     pattern = pattern,
     callback = run
   })
