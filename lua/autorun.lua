@@ -31,6 +31,7 @@ local function attach_to_buffer(bufnr, pattern, command)
       if #data then
         local start = isError and -1 or 0
         local title = isError and "stderr" or "stdout"
+        print("title =", title)
         vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
       end
