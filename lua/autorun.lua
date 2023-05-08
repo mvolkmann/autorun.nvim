@@ -28,6 +28,8 @@ local function attach_to_buffer(bufnr, pattern, command)
         -- vim.api.nvim_buf_set_extmark(bufnr, 0, hl_group, 1)
       end ]]
       vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
+      -- Move focus back to the previous buffer.
+      vim.api.nvim_input("<C-w>h")
     end
 
     vim.fn.jobstart(command, {
@@ -50,19 +52,19 @@ M.setup = function()
   vim.api.nvim_create_user_command(
     "AutoRun",
     function()
-      -- TODO: Do the equivalent of :vnew.
-      vim.api.nvim_command("vnew")
-      -- TODO: Get the buffer number.
-      local bufnr = vim.api.nvim_get_current_buf()
-      print("bufnr =", bufnr)
-      -- TODO: Move focus back to the previous buffer.
-      -- vim.api.nvim_command("bprevious")
-      vim.api.nvim_input("<C-w>h")
-      -- TODO: Now you won't need to prompt for the buffer number below.
-      -- local bufnr = vim.fn.input "Buffer Number: "
       local pattern = vim.fn.input "File Pattern: "
       local command = vim.fn.input "Command: "
       local words = vim.split(command, " ")
+
+      -- Create a new buffer in a vertical split.
+      -- TODO: Can you make this buffer read-only?
+      vim.api.nvim_command("vnew")
+      vim.api.nvim_command("setlocal buftype=nofile")
+      -- Get the buffer number of the new buffer.
+      local bufnr = vim.api.nvim_get_current_buf()
+      -- Move focus back to the previous buffer.
+      vim.api.nvim_input("<C-w>h")
+
       attach_to_buffer(tonumber(bufnr), pattern, words)
     end,
     {}
