@@ -1,13 +1,9 @@
--- CHANGE THIS
-
---[[ TODO: Get this to work!
-local bufnr = vim.api.nvim_get_current_buf()
-local hl_group = vim.api.nvim_get_hl_by_name("Error", true)
-print("hl_group =", hl_group)
--- vim.api.nvim_buf_add_highlight(bufnr, 0, "Error", 1, 1, 80)
-vim.api.nvim_buf_set_extmark(bufnr, 0, hl_group, 1, {})
-vim.api.nvim_buf_set_lines(bufnr, 1, 1, false, { "-- Hello, World!", "-- Line #2" }) ]]
-local M = {}
+local function highlight_line(bufnr, line, hl_group)
+  local ns_id = -1 -- ungrouped
+  local col_start = 0 -- beginning of line
+  local col_end = -1 -- end of line
+  vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
+end
 
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
@@ -66,12 +62,7 @@ local function attach_to_buffer(bufnr, pattern, command)
   run()
 end
 
-local function highlight_line(bufnr, line, hl_group)
-  local ns_id = -1 -- ungrouped
-  local col_start = 0 -- beginning of line
-  local col_end = -1 -- end of line
-  vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
-end
+local M = {}
 
 M.setup = function()
   vim.api.nvim_create_user_command(
