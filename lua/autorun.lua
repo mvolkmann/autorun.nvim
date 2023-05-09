@@ -1,12 +1,12 @@
-local function highlight_line(bufnr, line, hl_group)
-  local ns_id = -1 -- ungrouped
-  local col_start = 0 -- beginning of line
-  local col_end = -1 -- end of line
-  vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
-end
-
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
+    local function highlight_line(bufnr, line, hl_group)
+      local ns_id = -1 -- ungrouped
+      local col_start = 0 -- beginning of line
+      local col_end = -1 -- end of line
+      vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
+    end
+
     local function append_data(isError, data)
       -- This inserts or replaces lines of text at a given buffer line.
       -- 1st argument is the buffer number.
@@ -36,10 +36,6 @@ local function attach_to_buffer(bufnr, pattern, command)
         vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
         highlight_line(bufnr, -1, "Error") -- last line
 
-        --[[ vim.api.nvim_buf_set_extmark(bufnr, ns_id, -1, 0, {
-          hl_group = "Normal",
-          hl_eol = true
-        }) ]]
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
       end
       -- Move focus back to the previous buffer.
