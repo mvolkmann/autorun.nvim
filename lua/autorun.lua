@@ -13,6 +13,10 @@ local function attach_to_buffer(bufnr, pattern, command)
 
     local function append_data(isError, data)
 
+      print("isError =", isError)
+      vim.print(data)
+      print("end of data")
+
       -- Replace all existing lines
       if #data then
         local start = isError and -1 or 0
@@ -25,7 +29,7 @@ local function attach_to_buffer(bufnr, pattern, command)
         -- 4th argument is whether an error can be raised.
         -- 5th argument is a list of lines to be written.
         vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
-        highlight_line(-1, "Error") -- last line
+        highlight_line(start, "Error") -- last line
 
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
       end
@@ -86,7 +90,7 @@ M.setup = function()
   )
 end
 
--- return M
-
 -- For local testing ...
 M.setup()
+
+return M
