@@ -14,6 +14,7 @@ local function attach_to_buffer(bufnr, pattern, command)
     local function append_data(isError, data)
 
       local have_data = #data > 1 or (#data == 1 and data[1] ~= "")
+      print("isError = " .. isError .. ", have_data = " .. tostring(have_data))
 
       if have_data then
         local start = isError and -1 or 0
