@@ -69,8 +69,8 @@ M.setup = function()
   vim.api.nvim_create_user_command(
     "AutoRun",
     function()
-      local pattern = vim.fn.input "File Pattern: "
       local command = vim.fn.input "Command: "
+      local pattern = vim.fn.input "File Pattern: "
       local words = vim.split(command, " ")
 
       -- Create a new buffer in a vertical split.
