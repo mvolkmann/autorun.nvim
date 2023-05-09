@@ -38,6 +38,7 @@ local function attach_to_buffer(bufnr, pattern, command)
           hl_eol = true
         }) ]]
         vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
+        highlight_line(bufnr, -1, "Error") -- last line
 
         --[[ vim.api.nvim_buf_set_extmark(bufnr, ns_id, -1, 0, {
           hl_group = "Normal",
@@ -63,6 +64,13 @@ local function attach_to_buffer(bufnr, pattern, command)
   })
 
   run()
+end
+
+local function highlight_line(bufnr, line, hl_group)
+  local ns_id = -1 -- ungrouped
+  local col_start = 0 -- beginning of line
+  local col_end = -1 -- end of line
+  vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
 end
 
 M.setup = function()
