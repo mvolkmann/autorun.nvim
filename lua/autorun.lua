@@ -42,7 +42,7 @@ local function attach_to_buffer(bufnr, pattern, command)
   function run()
     -- Move focus to the new buffer and delete all lines in it.
     -- vim.api.nvim_input("<C-w>lggVGx")
-    vim.api.nvim_buf_set_lines bufnr, 0, -1, strict_indexing, {})
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, strict_indexing, {})
 
     vim.fn.jobstart(command, {
       stdout_buffered = true, -- only send complete lines
