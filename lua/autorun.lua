@@ -21,8 +21,6 @@ local function output_lines(bufnr, start_line, hl_group, lines)
 end
 
 local function attach_to_buffer(bufnr, pattern, command)
-  print("attached_to_buffer called")
-
   function run()
     local function append_data(is_error, data)
       local have_data = #data > 1 or (#data == 1 and data[1] ~= "")
