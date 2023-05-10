@@ -47,8 +47,6 @@ local function attach_to_buffer(bufnr, pattern, command)
       on_stdout = function(_, data) append_data(false, data) end,
       on_stderr = function(_, data) append_data(true, data) end
     })
-
-    output_lines(0, "Error", "Testing 1, 2, 3")
   end
 
   vim.api.nvim_create_autocmd("BufWritePost", {
