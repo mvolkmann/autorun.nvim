@@ -20,34 +20,34 @@ local function output_lines(bufnr, start_line, hl_group, lines)
   end
 end
 
+local function append_lines(bufnr, is_error, lines)
+    
+  local have_lines = #lines > 1 or (#lines == 1 and lines[1] ~= "")
+
+  if have_lines then
+    local title = is_error and "stderr" or "stdout"
+
+    output_lines(bufnr, start_line, "Error", {title})
+    start_line = start_line + 1
+
+    output_lines(bufnr, start_line, "Normal", lines)
+    start_line = start_line + #lines
+  end
+
+  -- Move focus back to the previous buffer.
+  vim.api.nvim_input("<C-w>h")
+end
+
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
-    local function append_lines(is_error, lines)
-      if not is_error then
-        -- Move focus to the new buffer and delete all lines in it.
-        vim.api.nvim_input("<C-w>lggVGx")
-      end
-        
-      local have_lines = #lines > 1 or (#lines == 1 and lines[1] ~= "")
-
-      if have_lines then
-        local title = is_error and "stderr" or "stdout"
-
-        output_lines(bufnr, start_line, "Error", {title})
-        start_line = start_line + 1
-
-        output_lines(bufnr, start_line, "Normal", lines)
-        start_line = start_line + #lines
-      end
-
-      -- Move focus back to the previous buffer.
-      vim.api.nvim_input("<C-w>h")
-    end
+    -- Move focus to the new buffer and delete all lines in it.
+    -- vim.api.nvim_input("<C-w>lggVGx")
+    vim.api.nvim_buf_set_lines bufnr, 0, -1, strict_indexing, {})
 
     vim.fn.jobstart(command, {
       stdout_buffered = true, -- only send complete lines
-      on_stdout = function(_, lines) append_lines(false, lines) end,
-      on_stderr = function(_, lines) append_lines(true, lines) end
+      on_stdout = function(_, lines) append_lines(bufnr, false, lines) end,
+      on_stderr = function(_, lines) append_lines(bufnr, true, lines) end
     })
   end
 
