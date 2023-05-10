@@ -22,20 +22,20 @@ end
 
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
-    local function append_data(is_error, data)
-      local have_data = #data > 1 or (#data == 1 and data[1] ~= "")
+    local function append_lines(is_error, lines)
+      local have_lines = #lines > 1 or (#lines == 1 and lines[1] ~= "")
 
-      if have_data then
-        local start_line = is_error and -1 or 0
+      if have_lines then
         local title = is_error and "stderr" or "stdout"
 
         output_lines(bufnr, start_line, "Error", {title})
         start_line = start_line + 1
 
-        -- Add data lines at the end.
-        local end_line = -1
-        vim.api.nvim_buf_set_lines(bufnr, ns_id, end_line, strict_indexing, data)
-        start_line = start_line + #data
+        -- Add lines lines at the end.
+        -- local end_line = -1
+        local end_line = start_line + #lines - 1
+        vim.api.nvim_buf_set_lines(bufnr, ns_id, end_line, strict_indexing, lines)
+        start_line = start_line + #lines
       end
 
       -- Move focus back to the previous buffer.
@@ -44,8 +44,8 @@ local function attach_to_buffer(bufnr, pattern, command)
 
     vim.fn.jobstart(command, {
       stdout_buffered = true, -- only send complete lines
-      on_stdout = function(_, data) append_data(false, data) end,
-      on_stderr = function(_, data) append_data(true, data) end
+      on_stdout = function(_, lines) append_lines(false, lines) end,
+      on_stderr = function(_, lines) append_lines(true, lines) end
     })
   end
 
