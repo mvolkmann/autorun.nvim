@@ -36,7 +36,7 @@ local function append_lines(bufnr, is_error, lines)
   end
 
   -- Move focus back to the previous buffer.
-  vim.api.nvim_input("<C-w>h")
+  -- vim.api.nvim_input("<C-w>h")
 end
 
 local function attach_to_buffer(bufnr, pattern, command)
