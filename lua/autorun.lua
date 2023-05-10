@@ -23,8 +23,10 @@ end
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
     local function append_lines(is_error, lines)
-      -- Delete all lines in the buffer if is_error is false.
-      if not is_error then vim.api.nvim_input("ggVGx") end
+      if not is_error then
+        -- Move focus to the new buffer and delete all lines in it.
+        vim.api.nvim_input("<C-w>lggVGx")
+      end
         
       local have_lines = #lines > 1 or (#lines == 1 and lines[1] ~= "")
 
