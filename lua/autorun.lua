@@ -1,37 +1,43 @@
+local ns_id = 0 -- creates a temporary namespace
+local start_line = 0
+local strict_indexing = false
+
+local function output_lines(bufnr, start_line, hl_group, lines)
+  -- Output the lines.
+  local end_line = -1
+  vim.api.nvim_buf_set_lines(
+    bufnr, start_line, end_line, strict_indexing, lines
+  )
+
+  -- Apply highlighting to the lines that were just output.
+  local col_start = 0 -- beginning of line
+  local col_end = -1 -- end of line
+  local end_line = start_line + #lines - 1
+  for line = start_line, end_line do
+    vim.api.nvim_buf_add_highlight(
+      bufnr, ns_id, hl_group, line, col_start, col_end
+    )
+  end
+end
+
 local function attach_to_buffer(bufnr, pattern, command)
   print("attached_to_buffer called")
 
   function run()
-
-    local function highlight_line(line, hl_group)
-      print("highlight_line: hl_group =", hl_group)
-      local ns_id = -1 -- ungrouped
-      local col_start = 0 -- beginning of line
-      local col_end = -1 -- end of line
-      vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl_group, line, col_start, col_end)
-    end
-
-    local function append_data(isError, data)
-
+    local function append_data(is_error, data)
       local have_data = #data > 1 or (#data == 1 and data[1] ~= "")
-      print("isError = " .. isError .. ", have_data = " .. tostring(have_data))
 
       if have_data then
-        local start = isError and -1 or 0
-        local title = isError and "stderr" or "stdout"
+        local start_line = is_error and -1 or 0
+        local title = is_error and "stderr" or "stdout"
 
-        -- This inserts or replaces lines of text at a given buffer line.
-        -- 1st argument is the buffer number.
-        -- 2nd argument is the starting line number (-1 for end).
-        -- 3rd argument is the ending line number.
-        -- 4th argument is whether an error can be raised.
-        -- 5th argument is a list of lines to be written.
-        -- When start is 0, all existing lines are replaced.
-        vim.api.nvim_buf_set_lines(bufnr, start, -1, false, { title })
-        highlight_line(start, "Error")
+        output_lines(bufnr, start_line, "Error", {title})
+        start_line = start_line + 1
 
         -- Add data lines at the end.
-        vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
+        local end_line = -1
+        vim.api.nvim_buf_set_lines(bufnr, ns_id, end_line, strict_indexing, data)
+        start_line = start_line + #data
       end
 
       -- Move focus back to the previous buffer.
@@ -43,6 +49,8 @@ local function attach_to_buffer(bufnr, pattern, command)
       on_stdout = function(_, data) append_data(false, data) end,
       on_stderr = function(_, data) append_data(true, data) end
     })
+
+    output_lines(0, "Error", "Testing 1, 2, 3")
   end
 
   vim.api.nvim_create_autocmd("BufWritePost", {
@@ -75,6 +83,7 @@ M.setup = function()
       -- Move focus back to the previous buffer.
       vim.api.nvim_input("<C-w>h")
 
+      start_line = 0
       attach_to_buffer(tonumber(bufnr), pattern, words)
     end,
     {}
