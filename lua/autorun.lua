@@ -27,10 +27,11 @@ local function append_lines(bufnr, is_error, lines)
   if have_lines then
     local title = is_error and "stderr" or "stdout"
 
-    output_lines(bufnr, start_line, "Error", {title})
+    output_lines(bufnr, start_line, "Directory", {title})
     start_line = start_line + 1
 
-    output_lines(bufnr, start_line, "Normal", lines)
+    local hl_group = is_error and "Error" or "Normal"
+    output_lines(bufnr, start_line, hl_group, lines)
     start_line = start_line + #lines
   end
 
@@ -40,9 +41,9 @@ end
 
 local function attach_to_buffer(bufnr, pattern, command)
   function run()
-    -- Move focus to the new buffer and delete all lines in it.
-    -- vim.api.nvim_input("<C-w>lggVGx")
+    -- Clear the buffer.
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, strict_indexing, {})
+    start_line = 0
 
     vim.fn.jobstart(command, {
       stdout_buffered = true, -- only send complete lines
