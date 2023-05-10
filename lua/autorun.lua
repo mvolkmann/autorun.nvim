@@ -31,10 +31,7 @@ local function attach_to_buffer(bufnr, pattern, command)
         output_lines(bufnr, start_line, "Error", {title})
         start_line = start_line + 1
 
-        -- Add lines lines at the end.
-        -- local end_line = -1
-        local end_line = start_line + #lines - 1
-        vim.api.nvim_buf_set_lines(bufnr, ns_id, end_line, strict_indexing, lines)
+        output_lines(bufnr, start_line, "Normal", lines)
         start_line = start_line + #lines
       end
 
